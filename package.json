@@ -1,0 +1,23 @@
+{
+  "name": "mongodb-graphql",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-graphql": "^0.9.0",
+    "graphql": "^14.5.8",
+    "graphql-tools": "^4.0.6",
+    "mongoose": "^5.7.8",
+    "neo4j-graphql-js": "^2.8.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.4"
+  }
+}

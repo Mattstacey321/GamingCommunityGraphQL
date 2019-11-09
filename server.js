@@ -1,7 +1,7 @@
 const express= require('express');
 const express_graphql= require('express-graphql');
 const mongoose= require('mongoose');
-
+var path= require('path');
 require('dotenv').config();
 const schema= require('./schema');
 // what to use in graphql
@@ -21,7 +21,10 @@ app.use('/graphql',express_graphql({
     schema:schema,
     graphiql: process.env.NODE_ENV === 'development',
 }));
-
+app.use(express.static(__dirname + '/homepage'));
+app.get('/',(req,res)=>{
+    res.render('/homepage/index.html');
+});
 
 mongoose.Promise= global.Promise;
 

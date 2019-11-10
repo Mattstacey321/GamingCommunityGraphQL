@@ -19,7 +19,8 @@ const app= express();
 
 app.use('/graphql',express_graphql({
     schema:schema,
-    graphiql: process.env.NODE_ENV === 'development',
+    graphiql: true,
+    /*process.env.NODE_ENV === 'development'*/
 }));
 app.use(express.static(__dirname + '/homepage'));
 app.get('/',(req,res)=>{
@@ -32,6 +33,6 @@ mongoose.connect(process.env.DB_CONNECTION,{useUnifiedTopology: true},(res,err)=
     
     console.log('Connected to MongoDB');
 })
-app.listen(3000,()=>{
+app.listen(process.env.PORT||3000,()=>{
     console.log('Listen to port 3000');
 })

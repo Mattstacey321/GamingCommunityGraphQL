@@ -5,8 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build":""
-
+    "build": ""
   },
   "author": "",
   "license": "ISC",
@@ -20,6 +19,7 @@
     "neo4j-graphql-js": "^2.8.0"
   },
   "devDependencies": {
-    "nodemon": "^1.19.4"
+    "nodemon": "^1.19.4",
+    "sync-glitch-cli": "^2.0.1"
   }
 }

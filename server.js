@@ -19,7 +19,7 @@ const app= express();
 
 app.use('/graphql',express_graphql({
     schema:schema,
-    graphiql: true,
+    graphiql: process.env.NODE_ENV === 'development',
     /*process.env.NODE_ENV === 'development'*/
 }));
 app.use(express.static(__dirname + '/homepage'));

@@ -29,7 +29,7 @@ app.get('/',(req,res)=>{
 
 mongoose.Promise= global.Promise;
 
-mongoose.connect(process.env.DB_CONNECTION,{useUnifiedTopology: true},(res,err)=>{
+mongoose.connect(process.env.DB_CONNECTION,{useUnifiedTopology: true,useNewUrlParser: true},(res,err)=>{
     
     console.log('Connected to MongoDB');
 })

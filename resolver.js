@@ -14,7 +14,7 @@ module.exports= resolvers= {
             return await User.find();
         },
         async findRoom(root,{name}){
-            return await Room.findOne({"room_name":name});
+            return await Room.find({"room_name":name});
         },
         async allGlobalRoom(root,{qty,name}){
             
@@ -26,14 +26,38 @@ module.exports= resolvers= {
             {
                 return await GlobalRoom.find({"room_name":name});
             }
+        },
+        async findUser(root, {username}){
+            return await User.find({"username":username},(err,res)=>{
+                console.log(res);
+                console.log(res[0]._id)
+                
+            });
+        },
+        async RmvMbFrRoom(root,{idUser,idRoom}){
+            return Room.updateOne({"_id":idRoom},{$pull:{"member":{"_id":idUser}}});
+        },
+        async EditRoom(root,{idRoom,roomName}){
+            return Room.findOneAndUpdate({"_id":idRoom},{$set:{"room_name":roomName}})
+        },
+        async ChangeHost(root,{}){
+            
         }
+        
 
     },
     Mutation:{
         async createRoom(root,{
-            input
-        }){
-            return await Room.create(input);
+            input,username
+        }){+
+            Room.create(input);
+            
+            User.findOne({"username":username},async (err,res)=>{
+                await Room.findOneAndUpdate({"room_name":input.room_name},{$push:{"member":res}},{upsert:true});
+            });
+        },
+        async RemoveRoom(root,{id}){
+            Room.deleteOne({"_id":id});
         },
         async createUser(root,{
             input

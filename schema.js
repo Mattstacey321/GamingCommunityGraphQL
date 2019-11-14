@@ -9,8 +9,14 @@ const typeDefs=`
         allMessage:[ListMessage]
         allRoom:[Room]
         allUser:[User]
+        findUser(username:String!):[User]
         findRoom(input:RoomInput):[Room]
         allGlobalRoom(qty:Int,name:String):[GlobalMessage]
+        RmvMbFrRoom(idUser:String!,idRoom:String!):[Room]
+        EditRoom(idRoom:String!,roomName:String):[Room]
+        ChangeHost:[Room]
+    
+    
     }
     type Room{
         _id:ID!
@@ -22,9 +28,11 @@ const typeDefs=`
         _id:ID!
         username:String!
         avatar:String!
+        isHost:Boolean
     }
 
     type Message{
+        _id:ID!
         message:String!
         datetime:String!
     }
@@ -53,12 +61,15 @@ const typeDefs=`
     input RoomInput{
         room_name:String!
         isPrivate:Boolean!
+        hostName:String!
         password:String
         member:[UserInput]
+        
     }
     input UserInput{
         username:String!
         avatar:String!
+        isHost:Boolean=false
     }
     input MessageInput{
         message:String!
@@ -75,8 +86,11 @@ const typeDefs=`
         ]
     }
     
+    
     type Mutation{
-        createRoom(input: RoomInput):Room
+        createRoom(username:String,input: RoomInput):Room
+        RemoveRoom(id:ID!):Room
+        
         createUser(input:UserInput):User
         onChatGlobal(which_game:String!,input:
             

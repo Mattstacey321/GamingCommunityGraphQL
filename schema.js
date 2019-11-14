@@ -21,12 +21,12 @@ const typeDefs=`
     type Room{
         _id:ID!
         room_name:String!
-        host_name:User
+        host_name:String
         member:[User!]
     }
     type User{
         _id:ID!
-        username:String!
+        username:String
         avatar:String!
         isHost:Boolean
     }

@@ -15,18 +15,20 @@ const typeDefs=`
         RmvMbFrRoom(idUser:String!,idRoom:String!):[Room]
         EditRoom(idRoom:String!,roomName:String):[Room]
         ChangeHost:[Room]
-    
+        getRoomByUser(idUser:String,name:String):[Room]
     
     }
     type Room{
         _id:ID!
         room_name:String!
-        host_name:String
+        host_name:[User]
+        isPrivate:Boolean
+        password:String
         member:[User!]
     }
     type User{
         _id:ID!
-        username:String
+        username:String!
         avatar:String!
         isHost:Boolean
     }
@@ -61,12 +63,13 @@ const typeDefs=`
     input RoomInput{
         room_name:String!
         isPrivate:Boolean!
-        hostName:String!
+        host_name:[UserInput]
         password:String
         member:[UserInput]
         
     }
     input UserInput{
+        _id:ID!
         username:String!
         avatar:String!
         isHost:Boolean=false
@@ -88,7 +91,7 @@ const typeDefs=`
     
     
     type Mutation{
-        createRoom(username:String,input: RoomInput):Room
+        createRoom(username:String,input: RoomInput,userInput:UserInput):Room
         RemoveRoom(id:ID!):Room
         
         createUser(input:UserInput):User

@@ -42,6 +42,9 @@ module.exports= resolvers= {
         },
         async ChangeHost(root,{}){
             
+        },
+        async getRoomByUser(root,{idUser,name}){
+            return Room.find({"host_name":name})
         }
         
 
@@ -49,15 +52,18 @@ module.exports= resolvers= {
     Mutation:{
         async createRoom(root,{
             input,username
-        }){+
+        }){
             Room.create(input);
             
             User.findOne({"username":username},async (err,res)=>{
-                await Room.findOneAndUpdate({"room_name":input.room_name},{$push:{"member":res}},{upsert:true});
+               // var userInfo={"username":username,avatar:"","_id":res._id};
+                await Room.findOneAndUpdate({"room_name":input.room_name},{$push:{"member":res,"host_name":res}},{upsert:true});
             });
         },
         async RemoveRoom(root,{id}){
-            Room.deleteOne({"_id":id});
+           Room.deleteOne({"_id":id}).then((result)=>{
+               return result.ok
+           });
         },
         async createUser(root,{
             input

@@ -46,7 +46,8 @@ module.exports= resolvers= {
         async getRoomByUser(root,{idUser,name}){
             await Room.find({},async (err,res)=>{
               res.forEach(async (f)=>{
-                console.log(f["host_name"])
+                f.toObject({ getters: true });
+                await console.log(f.host_name)
               })
             })
         }

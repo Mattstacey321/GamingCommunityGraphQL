@@ -44,12 +44,8 @@ module.exports= resolvers= {
             
         },
         async getRoomByUser(root,{idUser,name}){
-            await Room.find({},async (err,res)=>{
-              res.toObject({ getters: true });
-              res.forEach(async (f)=>{
+            return Room.aggregate([{$match:{"host_name.username":name}}],(err,res)=>{
                 
-                await console.log(f.host_name)
-              })
             })
         }
         

@@ -59,17 +59,10 @@ module.exports= resolvers= {
               console.log(res)
                res.isHost=true
                // var userInfo={"username":username,avatar:"","_id":res._id};
-                 return Room.findOneAndUpdate({"room_name":input.room_name},{$set:{"member":res,"host_name":res}},{upsert:true},(err,result)=>{
-                   console.log(result);
-                   if(result.length !=0)
-                     {
-                       return {res,"result":"OK"};
-                     }
-                   else
-                     
-                     {
-                       return {"result":"Fail"};
-                     }
+                 return Room.findOneAndUpdate({"room_name":input.room_name},{$set:{"member":res,"host_name":res}},{upsert:true},async (err,result)=>{
+                   var len= result.length;
+                   console.log(len);
+                   
                  })
             })
           

@@ -60,11 +60,12 @@ module.exports= resolvers= {
                res.isHost=true
                // var userInfo={"username":username,avatar:"","_id":res._id};
                  return Room.findOneAndUpdate({"room_name":input.room_name},{$set:{"member":res,"host_name":res}},{upsert:true,new:true},async (err,doc)=>{
+                   console.log(doc)
                    if(doc){
-                     return doc
+                     return await {"result":"OK"}
                    }
                    else{
-                     return {"result":"Fail"}
+                     return await {err,"result":"Fail"}
                    }
                    
                  })

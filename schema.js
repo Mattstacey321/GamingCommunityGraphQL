@@ -54,6 +54,7 @@ const typeDefs=`
 
     }
     type Result{
+      data:Room
       result:String
     }    
    

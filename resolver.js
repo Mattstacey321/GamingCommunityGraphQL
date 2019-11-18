@@ -55,16 +55,19 @@ module.exports= resolvers= {
         async createRoom(root,{
             input,username
         }){
-
-            User.findOne({"username":username},async (err,res)=>{
+            User.findOne({"username":username}).then(async res=>{
               console.log(res)
                res.isHost=true
                // var userInfo={"username":username,avatar:"","_id":res._id};
-                 await Room.findOneAndUpdate({"room_name":input.room_name},{$set:{"member":res,"host_name":res}},{upsert:true}).then((res)=>{
-                   console.log(res)
-                   return res;
+                 return await Room.findOneAndUpdate({"room_name":input.room_name},{$set:{"member":res,"host_name":res}},{upsert:true}).then(async res=>{
+                   console.log(await res)
+                   //return await res;
                  });
-            });
+            })
+          var rs={"result":"OK"};
+          return rs;
+              
+            
         },
         async RemoveRoom(root,{id}){
            Room.deleteOne({"_id":id}).then((result)=>{

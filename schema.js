@@ -54,7 +54,6 @@ const typeDefs=`
 
     }
     type Result{
-      roomtype:[Room]
       result:String
     }    
    

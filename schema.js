@@ -53,6 +53,9 @@ const typeDefs=`
         ]
 
     }
+    type Result{
+      result:String
+    }    
    
     input newMessage{
         username:String!
@@ -91,7 +94,7 @@ const typeDefs=`
     
     
     type Mutation{
-        createRoom(username:String,input: RoomInput,userInput:UserInput):Room
+        createRoom(username:String,input: RoomInput,userInput:UserInput):Result
         RemoveRoom(id:ID!):Room
         
         createUser(input:UserInput):User

@@ -59,9 +59,9 @@ module.exports= resolvers= {
               console.log(res)
                res.isHost=true
                // var userInfo={"username":username,avatar:"","_id":res._id};
-                 return Room.findOneAndUpdate({"room_name":input.room_name},{$set:{"member":res,"host_name":res}},{upsert:true}).then(async (f)=>{
-                   await console.log(f);
-                   return {"data":f,"result":"0K"}
+                 return Room.findOneAndUpdate({"room_name":input.room_name},{$set:{"member":res,"host_name":res}},{upsert:true,'new': true}).then(async (f)=>{
+                   
+                   return {"data":f,"result":"OK"}
                  }).catch(err=>{
                    return {err,"result":"Fail"}
                  })
@@ -99,8 +99,8 @@ module.exports= resolvers= {
             return await Message;
         },
         async onJoinRoom(root,{roomName,input}){
-            var val;
-            Room.findOneAndUpdate({"room_name":roomName},{$push:{"member":input}},{
+            
+            return Room.findOneAndUpdate({"room_name":roomName},{$push:{"member":input}},{
                 upsert: true,
                 new: true,
                 runValidators: true,
@@ -109,14 +109,14 @@ module.exports= resolvers= {
               },async (err,doc,res)=>{
                   if(doc.ok==1)
                   {
-                      val=1;
+                      return {"join":"Success"}
                   }
                   else{
-                      val=0;
+                      return {"join":"Fail"}
                   }
                 //console.log(res);
             })
-            return await Room;
+            
         },
         async onChatGlobal({name,input}){
             GlobalRoom.findOneAndUpdate({room_name:name},{$push:{message:input}},{upsert:true,rawResult:true},(err,doc)=>{

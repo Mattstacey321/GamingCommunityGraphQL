@@ -5,7 +5,7 @@ const Room= mongoose.Schema({
     room_name:String,
     isPrivate:{
       type:Boolean,
-      ddefault: fals
+      default: false
     },
     host_name:[User.schema],
     member:[User.schema],

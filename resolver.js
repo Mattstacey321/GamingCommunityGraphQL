@@ -57,7 +57,7 @@ module.exports= resolvers= {
         }){
             Room.create(input);
             
-            User.findOne({"username":username},async (err,res)=>{
+            return User.findOne({"username":username},async (err,res)=>{
               console.log(res)
                // var userInfo={"username":username,avatar:"","_id":res._id};
                 return await Room.findOneAndUpdate({"room_name":input.room_name},{$push:{"member":res,"host_name":res}},(err,res)=>{

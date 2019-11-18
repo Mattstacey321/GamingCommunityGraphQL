@@ -62,7 +62,7 @@ const typeDefs=`
     }
     input RoomInput{
         room_name:String!
-        isPrivate:Boolean!
+        isPrivate:Boolean!:false
         host_name:[UserInput]
         password:String
         member:[UserInput]
@@ -91,7 +91,7 @@ const typeDefs=`
     
     
     type Mutation{
-        createRoom(username:String,input: RoomInput,userInput:UserInput):Room
+        createRoom(username:String,input: RoomInput,userInput:UserInput):ID
         RemoveRoom(id:ID!):Room
         
         createUser(input:UserInput):User

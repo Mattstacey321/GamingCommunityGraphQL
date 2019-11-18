@@ -62,7 +62,7 @@ const typeDefs=`
     }
     input RoomInput{
         room_name:String!
-        isPrivate:Boolean=false
+        isPrivate:Boolean
         host_name:[UserInput]
         password:String
         member:[UserInput]
@@ -72,7 +72,7 @@ const typeDefs=`
         _id:ID!
         username:String!
         avatar:String!
-        isHost:Boolean=false
+        isHost:Boolean
     }
     input MessageInput{
         message:String!

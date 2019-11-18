@@ -3,7 +3,10 @@ const User= require('./user')
 const Room= mongoose.Schema({
     //id:BigInt,
     room_name:String,
-    isPrivate:Boolean,
+    isPrivate:{
+      type:Boolean,
+      ddefault: fals
+    },
     host_name:[User.schema],
     member:[User.schema],
 

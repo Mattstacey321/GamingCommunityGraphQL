@@ -72,7 +72,7 @@ const typeDefs=`
         _id:ID!
         username:String!
         avatar:String!
-        isHost:Boolean=false
+        isHost:Boolean
     }
     input MessageInput{
         message:String!

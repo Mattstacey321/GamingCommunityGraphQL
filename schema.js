@@ -100,7 +100,7 @@ type ResultCRUD{
     
     type Mutation{
         createRoom(username:String,input: RoomInput,userInput:UserInput):Result
-        RemoveRoom(id:ID!):Result
+        RemoveRoom(id:ID!):ResultCRUD
         
         createUser(input:UserInput):User
         onChatGlobal(which_game:String!,input:

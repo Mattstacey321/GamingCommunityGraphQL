@@ -72,10 +72,19 @@ module.exports= resolvers= {
             
         },
         async RemoveRoom(root,{id}){
-           Room.deleteOne({"_id":id}).then((result)=>{
-               return {"result":"OK"}
+           return Room.deleteOne({"_id":id}).then((result)=>{
+             console.log(result.ok)
+             if(result.ok)
+               {
+                 return {"statusCode":"200","result":"OK"}
+               }
+             else
+               {
+                 return {"statusCode":"400","result":"Fail"}
+               }
+               
            }).catch(err=>{
-             return {err,"result":"Fail"}
+             return {"statusCode":"400","result":"Fail"}
            });
         },
         async createUser(root,{

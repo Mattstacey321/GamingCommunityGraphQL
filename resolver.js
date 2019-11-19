@@ -72,7 +72,7 @@ module.exports= resolvers= {
             
         },
         async RemoveRoom(root,{id}){
-           return Room.deleteOne({"_id":id}).then((result)=>{
+           /*return Room.findOneAndRemove({"_id":id}).then((result)=>{
              console.log(result.ok)
              if(result.ok)
                {
@@ -85,7 +85,17 @@ module.exports= resolvers= {
                
            }).catch(err=>{
              return {"statusCode":"400","result":"Fail"}
-           });
+           });*/
+          return Room.findOneAndRemove({"_id":id},(err)=>{
+            console.log(err)
+            if(!err){
+              return {"statusCode":"200","result":"OK"}
+            }
+            else
+              {
+                return {"statusCode":"400","result":"Fail"}
+              }
+          })
         },
         async createUser(root,{
             input

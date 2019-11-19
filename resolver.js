@@ -73,7 +73,9 @@ module.exports= resolvers= {
         },
         async RemoveRoom(root,{id}){
            Room.deleteOne({"_id":id}).then((result)=>{
-               return result.ok
+               return {"result":"OK"}
+           }).catch(err=>{
+             return {err,"result":"Fail"}
            });
         },
         async createUser(root,{

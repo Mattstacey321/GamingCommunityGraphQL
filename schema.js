@@ -56,7 +56,11 @@ const typeDefs=`
     type Result{
       data:Room
       result:String
-    }    
+    }
+type ResultCRUD{
+    statusCode:String
+      result:String
+}
    
     input newMessage{
         username:String!
@@ -96,7 +100,7 @@ const typeDefs=`
     
     type Mutation{
         createRoom(username:String,input: RoomInput,userInput:UserInput):Result
-        RemoveRoom(id:ID!):Room
+        RemoveRoom(id:ID!):Result
         
         createUser(input:UserInput):User
         onChatGlobal(which_game:String!,input:

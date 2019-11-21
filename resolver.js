@@ -42,7 +42,11 @@ module.exports= resolvers= {
             return Room.updateOne({"_id":idRoom},{$pull:{"member":{"_id":idUser}}});
         },
         async EditRoom(root,{idRoom,newData}){
-            return Room.findOneAndUpdate({"_id":idRoom},{$set:{"room_name":newData.room_name,"isPrivate":newData.isPrivate}},{upsert:true,'new': true})
+            return Room.findOneAndUpdate({"_id":idRoom},{$set:{"room_name":newData.room_name,"isPrivate":newData.isPrivate,"password":newData.password,"description":newData.description}},{upsert:true,'new': true}).then(res=>{
+              return {"data":res,"result":"OK"}
+            }).catch(err=>{
+              return {err,"result":"Fail"}
+            })
         },
         async ChangeHost(root,{}){
             
@@ -64,7 +68,7 @@ module.exports= resolvers= {
                res.isHost=true
                // var userInfo={"username":username,avatar:"","_id":res._id};
                  return Room.findOneAndUpdate({"room_name":input.room_name},{$set:{"member":res,"host_name":res,"password":input.password,"isPrivate":input.isPrivate,"description":input.description}},{upsert:true,'new': true}).then(async (f)=>{
-                   
+                   console.log(f)
                    return {"data":f,"result":"OK"}
                  }).catch(err=>{
                    return {err,"result":"Fail"}

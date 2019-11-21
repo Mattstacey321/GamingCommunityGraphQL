@@ -16,9 +16,10 @@ module.exports= resolvers= {
         async findRoom(root,{name}){
             return await Room.find({"room_name":name});
         },
-        async getRoomByID(root,{id}){
-          return await Room.findOne({"_id":id});
-        },
+      async getRoomByID(root,{idRoom}){
+        return await Room.findById(idRoom);
+      },
+        
         async allGlobalRoom(root,{qty,name}){
             
             if(qty ==0 || null)

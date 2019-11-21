@@ -41,8 +41,8 @@ module.exports= resolvers= {
         async RmvMbFrRoom(root,{idUser,idRoom}){
             return Room.updateOne({"_id":idRoom},{$pull:{"member":{"_id":idUser}}});
         },
-        async EditRoom(root,{idRoom,roomName}){
-            return Room.findOneAndUpdate({"_id":idRoom},{$set:{"room_name":roomName}})
+        async EditRoom(root,{idRoom,newData}){
+            return Room.findOneAndUpdate({"_id":idRoom},{$set:{"room_name":newData.roomName}})
         },
         async ChangeHost(root,{}){
             

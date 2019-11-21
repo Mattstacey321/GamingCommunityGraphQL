@@ -7,6 +7,8 @@ const Room= mongoose.Schema({
       type:Boolean,
       default: false
     },
+    description:String,
+    password:String,
     host_name:[User.schema],
     member:[User.schema],
 

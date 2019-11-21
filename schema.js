@@ -24,6 +24,7 @@ const typeDefs=`
         host_name:[User]
         isPrivate:Boolean
         password:String
+        description:String
         member:[User!]
     }
     type User{

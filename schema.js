@@ -13,7 +13,7 @@ const typeDefs=`
         findRoom(input:RoomInput):[Room]
         allGlobalRoom(qty:Int,name:String):[GlobalMessage]
         RmvMbFrRoom(idUser:String!,idRoom:String!):[Room]
-        EditRoom(idRoom:ID!,newData:RoomInput):Room
+        EditRoom(idRoom:ID!,newData:RoomInput):Result
         ChangeHost:[Room]
         getRoomByUser(idUser:String,name:String):[Room]
         getRoomByID(idRoom:String):Room

@@ -74,6 +74,7 @@ type ResultCRUD{
         isPrivate:Boolean
         host_name:[UserInput]
         password:String
+        description:String
         member:[UserInput]
         
     }

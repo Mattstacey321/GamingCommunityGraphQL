@@ -42,7 +42,7 @@ module.exports= resolvers= {
             return Room.updateOne({"_id":idRoom},{$pull:{"member":{"_id":idUser}}});
         },
         async EditRoom(root,{idRoom,newData}){
-            return Room.findOneAndUpdate({"_id":idRoom},{$set:{"room_name":newData.roomName}})
+            return Room.findOneAndUpdate({"_id":idRoom},{$set:{"room_name":newData.roomName,"isPrivate":newData.isPrivate}})
         },
         async ChangeHost(root,{}){
             

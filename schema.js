@@ -16,7 +16,7 @@ const typeDefs=`
         EditRoom(idRoom:String!,roomName:String):[Room]
         ChangeHost:[Room]
         getRoomByUser(idUser:String,name:String):[Room]
-    
+        getRoomByID(id:String):[Room]
     }
     type Room{
         _id:ID!

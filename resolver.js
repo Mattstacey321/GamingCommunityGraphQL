@@ -43,9 +43,9 @@ module.exports= resolvers= {
         },
         async EditRoom(root,{idRoom,newData}){
             return Room.findOneAndUpdate({"_id":idRoom},{$set:{"room_name":newData.room_name,"isPrivate":newData.isPrivate,"password":newData.password,"description":newData.description}},{upsert:true,'new': true}).then(res=>{
-              return {"data":res,"result":"OK"}
+              return {"data":res,"result":true}
             }).catch(err=>{
-              return {err,"result":"Fail"}
+              return {err,"result":false}
             })
         },
         async ChangeHost(root,{}){
@@ -69,9 +69,9 @@ module.exports= resolvers= {
                // var userInfo={"username":username,avatar:"","_id":res._id};
                  return Room.findOneAndUpdate({"room_name":input.room_name},{$set:{"member":res,"host_name":res,"password":input.password,"isPrivate":input.isPrivate,"description":input.description}},{upsert:true,'new': true}).then(async (f)=>{
                    console.log(f)
-                   return {"data":f,"result":"OK"}
+                   return {"data":f,"result":true}
                  }).catch(err=>{
-                   return {err,"result":"Fail"}
+                   return {err,"result":false}
                  })
             })
           
@@ -84,15 +84,15 @@ module.exports= resolvers= {
              
              if(result.deletedCount >0)
                {
-                 return {"statusCode":"200","result":"OK"}
+                 return {"statusCode":"200","result":true}
                }
              else
                {
-                 return {"statusCode":"400","result":"Fail"}
+                 return {"statusCode":"400","result":false}
                }
                
            }).catch(err=>{
-             return {"statusCode":"400","result":"Fail"}
+             return {"statusCode":"400","result":false}
            });
           
         },

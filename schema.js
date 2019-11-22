@@ -56,7 +56,7 @@ const typeDefs=`
     }
     type Result{
       data:Room
-      result:String
+      result:Boolean
     }
 type ResultCRUD{
     statusCode:String

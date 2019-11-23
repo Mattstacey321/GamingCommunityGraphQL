@@ -17,6 +17,7 @@ const typeDefs=`
         ChangeHost:[Room]
         getRoomByUser(idUser:String,name:String):[Room]
         getRoomByID(idRoom:String):Room
+        allRoomChat:[RoomChat]
     }
     type Room{
         _id:ID!
@@ -35,9 +36,10 @@ const typeDefs=`
     }
 
     type Message{
-        _id:ID!
-        message:String!
-        datetime:String!
+        _id:ID
+        IDUser:String
+        text:String
+        datetime:String
     }
     type ListMessage{
         username:String!
@@ -52,16 +54,23 @@ const typeDefs=`
         message:[    
             MessageGlobal
         ]
-
     }
     type Result{
       data:Room
       result:Boolean
     }
-type ResultCRUD{
-    statusCode:String
-      result:String
-}
+    type ResultCRUD{
+        statusCode:String
+        result:String
+    }
+    type RoomChat{
+        _id:ID!
+        id_room:String
+        member:[User]
+        messages:[
+            Message
+        ]
+    }
    
     input newMessage{
         username:String!
@@ -79,29 +88,41 @@ type ResultCRUD{
         
     }
     input UserInput{
-        _id:ID!
+        _id:ID
         username:String!
         avatar:String!
         isHost:Boolean
     }
     input MessageInput{
-        message:String!
-        datetime:String!
+        IDUser:String
+        text:String
+        datetime:String
     }
     input MessageGlobalInput1{
         username:UserInput
         message:String
     }
     input MessageGlobalInput{
-        room_name:String,
+        room_name:String
         message:[
             MessageGlobalInput1
+        ]
+    }
+    input RoomChatInput{
+        
+        id_room:String
+        member:[
+            UserInput
+        ]
+        messages:[
+            MessageInput
         ]
     }
     
     
     type Mutation{
-        createRoom(username:String,input: RoomInput,userInput:UserInput):Result
+        createRoomChat(input:RoomChatInput):RoomChat
+        createRoom(username:String,inputRoom:RoomChatInput,input: RoomInput,userInput:UserInput):Result
         RemoveRoom(id:ID!):ResultCRUD
         
         createUser(input:UserInput):User

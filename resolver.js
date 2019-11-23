@@ -64,6 +64,18 @@ module.exports = resolvers = {
             
             return RoomChat.create(input);
         },
+        async createRoom(root,{
+            input,username
+        }){
+            Room.create(input);
+            
+            User.findOne({"username":username},async (err,res)=>{
+                await Room.findOneAndUpdate({"room_name":input.room_name},{$push:{"member":res}},{upsert:true});
+            });
+        },
+        async RemoveRoom(root,{id}){
+            Room.deleteOne({"_id":id});
+        },
         async createRoom(root, {inputRoom,
             input, username
         }) {

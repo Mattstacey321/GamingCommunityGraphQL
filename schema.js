@@ -18,6 +18,7 @@ const typeDefs=`
         getRoomByUser(idUser:String,name:String):[Room]
         getRoomByID(idRoom:String):Room
         allRoomChat:[RoomChat]
+        getRoomJoin(UserID:String):[RoomChat]
     }
     type Room{
         _id:ID!

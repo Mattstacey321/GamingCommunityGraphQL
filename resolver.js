@@ -57,6 +57,10 @@ module.exports = resolvers = {
             return Room.aggregate([{ $match: { "host_name.username": name } }], (err, res) => {
 
             })
+        },
+        async getRoomJoin(root,{UserID}){
+            return RoomChat.find(
+                {"member._id":UserID},)
         }
     },
     Mutation: {

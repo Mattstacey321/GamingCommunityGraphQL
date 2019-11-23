@@ -13,18 +13,11 @@ const typeDefs=`
         findRoom(input:RoomInput):[Room]
         allGlobalRoom(qty:Int,name:String):[GlobalMessage]
         RmvMbFrRoom(idUser:String!,idRoom:String!):[Room]
-<<<<<<< HEAD
         EditRoom(idRoom:ID!,newData:RoomInput):Result
         ChangeHost:[Room]
         getRoomByUser(idUser:String,name:String):[Room]
         getRoomByID(idRoom:String):Room
         allRoomChat:[RoomChat]
-=======
-        EditRoom(idRoom:String!,roomName:String):[Room]
-        ChangeHost:[Room]
-    
-    
->>>>>>> 79b34f911cb7cafe1cffafde6ff1d64ca75c96d9
     }
     type Room{
         _id:ID!
@@ -43,16 +36,10 @@ const typeDefs=`
     }
 
     type Message{
-<<<<<<< HEAD
         _id:ID
         IDUser:String
         text:String
         datetime:String
-=======
-        _id:ID!
-        message:String!
-        datetime:String!
->>>>>>> 79b34f911cb7cafe1cffafde6ff1d64ca75c96d9
     }
     type ListMessage{
         username:String!
@@ -93,13 +80,8 @@ const typeDefs=`
     }
     input RoomInput{
         room_name:String!
-<<<<<<< HEAD
         isPrivate:Boolean
         host_name:[UserInput]
-=======
-        isPrivate:Boolean!
-        hostName:String!
->>>>>>> 79b34f911cb7cafe1cffafde6ff1d64ca75c96d9
         password:String
         description:String
         member:[UserInput]
@@ -109,11 +91,7 @@ const typeDefs=`
         _id:ID
         username:String!
         avatar:String!
-<<<<<<< HEAD
         isHost:Boolean
-=======
-        isHost:Boolean=false
->>>>>>> 79b34f911cb7cafe1cffafde6ff1d64ca75c96d9
     }
     input MessageInput{
         IDUser:String
@@ -144,14 +122,9 @@ const typeDefs=`
     
     
     type Mutation{
-<<<<<<< HEAD
         createRoomChat(input:RoomChatInput):RoomChat
         createRoom(username:String,inputRoom:RoomChatInput,input: RoomInput,userInput:UserInput):Result
         RemoveRoom(id:ID!):ResultCRUD
-=======
-        createRoom(username:String,input: RoomInput):Room
-        RemoveRoom(id:ID!):Room
->>>>>>> 79b34f911cb7cafe1cffafde6ff1d64ca75c96d9
         
         createUser(input:UserInput):User
         onChatGlobal(which_game:String!,input:

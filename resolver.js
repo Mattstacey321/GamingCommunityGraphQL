@@ -60,10 +60,7 @@ module.exports = resolvers = {
         }
     },
     Mutation: {
-        async createRoomChat(root,{input}){
-            
-            return RoomChat.create(input);
-        },
+        
         async createRoom(root,{
             input,username
         }){
@@ -143,7 +140,7 @@ module.exports = resolvers = {
                  })*/
             Message.findOneAndUpdate({ username: name }, { $push: { "listmessage": input } }, { upsert: true }, async (err, doc, res) => {
             })
-            return await Message;
+            return Message;
         },
         async onJoinRoom(root, { roomName, input }) {
 

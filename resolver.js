@@ -40,8 +40,30 @@ module.exports = resolvers = {
 
             });
         },
-        async RmvMbFrRoom(root, { idUser, idRoom }) {
-            return Room.updateOne({ "_id": idRoom }, { $pull: { "member": { "_id": idUser } } });
+        async RmvMbFrRoom(root, {type ,idUser, idRoom }) {
+            if(type == "all"){
+                //removeAllMemberExceptHost
+                return Room.updateMany({"_id":idRoom},{$pull:{"member":{"member.$[].isHost":false}}},{multi:true},(err,raw)=>{
+                    console.log("raw "+raw);
+
+                }).then(value=>{
+
+                    return {"data":value,"result":true}
+                }).catch(err=>{
+                    return {"data":err,"result":false}
+                });
+            }else if(type == "once")
+            {
+                //remove specify member
+                return Room.findOneAndUpdate({_id:idRoom}, { $pull: { "member": {"_id":{$in:[idUser]}} } },{rawResult:true}).then(value=>{
+                    console.log(value);
+                    if(value){return {"data":value,"result":true}}
+                }).catch(err=>{
+                    console.log("err "+err);
+                    
+                    return { err, "result": false }});
+            }
+            
         },
         async EditRoom(root, { idRoom, newData }) {
             return Room.findOneAndUpdate({ "_id": idRoom }, { $set: { "room_name": newData.room_name, "isPrivate": newData.isPrivate, "password": newData.password, "description": newData.description } }, { upsert: true, 'new': true }).then(res => {
@@ -61,7 +83,61 @@ module.exports = resolvers = {
         async getRoomJoin(root,{UserID}){
             return RoomChat.find(
                 {"member._id":UserID},)
+        },
+        async onJoinRoomChat(root,{id_room,id_user}){
+            return User.findById(id_user,(err,res)=>{
+                return RoomChat.findByIdAndUpdate(id_room,{$push:{member:res}},{upsert:true,new:true}).then(value=>{
+                    return {"data":value,"result": true };
+                }).catch(err=>{
+                    return {"data":err,"result": false};
+                })
+            })
+           
+        },
+        async onJoinRoom(root,{id_room,id_user,pwd}){
+            return Room.findById(id_room).then(async value=>{
+                
+                if(value.isPrivate==true && value.password == pwd){
+                    return User.findById(id_user).then(async res=>{
+                        return Room.findByIdAndUpdate(id_room,{$push:{"member":res}},{upsert:true,new:true},(err,res)=>{
+                            
+                        }).then(val=>{
+                         
+                            return  { "data": val, "result": true };
+                        }).catch(err=>{
+                            return { "data": err, "result": false };
+                        })
+                    })
+                }
+                else if(value.password != pwd){
+                    return { "status": "Wrong password", "result": false };
+                }
+                else{
+                    return User.findById(id_user).then(async res=>{
+                        return Room.findByIdAndUpdate(id_room,{$push:{"member":res}},{upsert:true,new:true}).then(value=>{
+                            return  { "data": value, "result": true };
+                        }).catch(err=>{
+                            return { "data": err, "result": false };
+                        })
+                    })
+                }
+                
+            })
+            
+    
+        },
+        async addMember(root,{id_room,id_user}){
+            return User.findById(id_user).then(value=>{
+                return Room.findByIdAndUpdate(id_room,{$push:{member:value}},{upsert:true,new:true}).then(result=>{
+                    console.log(result);
+                    if(value){return {"data":result,"result":true}}
+                }).catch(err=>{return {"data":err,"result":false}})
+            })
+                
+            
+            //return Room.findByIdAndUpdate(idRoom,{})
         }
+        
     },
     Mutation: {
         

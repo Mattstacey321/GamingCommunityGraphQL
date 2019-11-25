@@ -12,13 +12,17 @@ const typeDefs=`
         findUser(username:String!):[User]
         findRoom(input:RoomInput):[Room]
         allGlobalRoom(qty:Int,name:String):[GlobalMessage]
-        RmvMbFrRoom(idUser:String!,idRoom:String!):[Room]
+        RmvMbFrRoom(type:String!,idUser:String,idRoom:String):Result
         EditRoom(idRoom:ID!,newData:RoomInput):Result
         ChangeHost:[Room]
         getRoomByUser(idUser:String,name:String):[Room]
         getRoomByID(idRoom:String):Room
         allRoomChat:[RoomChat]
         getRoomJoin(UserID:String):[RoomChat]
+        onJoinRoomChat(id_room:String,id_user:String):Result
+
+        onJoinRoom(id_room:String,id_user:String,pwd:String):Result
+        addMember(id_room:String!,id_user:String!):Result
     }
     type Room{
         _id:ID!
@@ -58,6 +62,7 @@ const typeDefs=`
     }
     type Result{
       data:Room
+      status:String
       result:Boolean
     }
     type ResultCRUD{
@@ -136,7 +141,9 @@ const typeDefs=`
         onChat(input:newMessage):ListMessage
         onChatUpdate(name:String!,input:MessageInput):ListMessage
         onJoinRoom(roomName:String!,input:UserInput):Room
-        createChatGlobal(input:MessageGlobalInput):GlobalMessage
+        createChatGlobal(input:
+           MessageGlobalInput ):GlobalMessage
+        
     }
 `;
 const schema= graphql_tools.makeExecutableSchema({

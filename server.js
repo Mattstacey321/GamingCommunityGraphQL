@@ -4,6 +4,7 @@ const mongoose= require('mongoose');
 var path= require('path');
 require('dotenv').config();
 const schema= require('./schema');
+var cors = require('cors')
 // what to use in graphql
 const {
     GraphQLSchema,
@@ -16,8 +17,9 @@ const {
 }= require('graphql');
 const app= express();
 
-
+app.use(cors());
 app.use('/graphql',express_graphql({
+    
     schema:schema,
     graphiql: true,
     /*process.env.NODE_ENV === 'development'*/
@@ -28,11 +30,11 @@ app.get('/',(req,res)=>{
 });
 
 mongoose.Promise= global.Promise;
-
+mongoose.set('useFindAndModify', false);
 mongoose.connect(process.env.DB_CONNECTION,{useUnifiedTopology: true,useNewUrlParser: true},(res,err)=>{
     
     console.log('Connected to MongoDB');
 })
-app.listen(process.env.PORT||3000,()=>{
+app.listen(process.env.PORT||8000,()=>{
     console.log('Listen to port 3000');
 })

@@ -7,7 +7,7 @@ const roomChat= mongoose.Schema({
         {
             IDUser:String,
             text:String,
-            time:Date
+            time:{ type: Date, default: Date.now }
         }   
     ]
 })

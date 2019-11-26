@@ -19,10 +19,12 @@ const typeDefs=`
         getRoomByID(idRoom:String):Room
         allRoomChat:[RoomChat]
         getRoomJoin(UserID:String):[RoomChat]
-        onJoinRoomChat(id_room:String,id_user:String):Result
+        onJoinRoomChat(id_room:String,id_user:String):JoinRoomResult
 
         onJoinRoom(id_room:String,id_user:String,pwd:String):Result
         addMember(id_room:String!,id_user:String!):Result
+        onChatGroup(id_room:String!,chat_message:MessageInput):Result
+        getAllMessage(id_room:String!):RoomChat
     }
     type Room{
         _id:ID!
@@ -68,6 +70,10 @@ const typeDefs=`
     type ResultCRUD{
         statusCode:String
         result:String
+    }
+    type JoinRoomResult{
+        data:RoomChat
+        result:Boolean
     }
     type RoomChat{
         _id:ID!

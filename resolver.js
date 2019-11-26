@@ -85,14 +85,14 @@ module.exports = resolvers = {
                 {"member._id":UserID},)
         },
         async onJoinRoomChat(root,{id_room,id_user}){
-            return User.findById(id_user,(err,res)=>{
-                return RoomChat.findByIdAndUpdate(id_room,{$push:{member:res}},{upsert:true,new:true}).then(value=>{
+            return User.findById(id_user).then( async v=>{
+                return RoomChat.findOneAndUpdate({"id_room":id_room},{$push:{member:v}},{upsert:true,new:true}).then(value=>{
+                    console.log(value)
                     return {"data":value,"result": true };
                 }).catch(err=>{
                     return {"data":err,"result": false};
                 })
-            })
-           
+        })
         },
         async onJoinRoom(root,{id_room,id_user,pwd}){
             return Room.findById(id_room).then(async value=>{
@@ -134,14 +134,26 @@ module.exports = resolvers = {
                 }).catch(err=>{return {"data":err,"result":false}})
             })
                 
+        },
+        async onChatGroup(root,{id_room,chat_message}){
             
-            //return Room.findByIdAndUpdate(idRoom,{})
+            return RoomChat.findOneAndUpdate({"id_room":id_room},{$push:{messages:chat_message}}).then(v=>{
+                console.log(v.messages[0].time);
+            })
+            /*return RoomChat.findByIdAndUpdate(id_room,{$push:{messages:chat_message}},{upsert:true,new:true}).then(result=>{
+                console.log(result);
+                return {"data":result,"result":true}
+            }).catch(err=>{return {"data":err,"result":false}});*/
+        },
+        async getAllMessage(root,{id_room}){
+            return RoomChat.findOne({"id_room":id_room}).then(result=>{
+                return result
+            })
         }
-        
     },
     Mutation: {
         
-        async createRoom(root,{
+       /* async createRoom(root,{
             input,username
         }){
             Room.create(input);
@@ -149,7 +161,7 @@ module.exports = resolvers = {
             User.findOne({"username":username},async (err,res)=>{
                 await Room.findOneAndUpdate({"room_name":input.room_name},{$push:{"member":res}},{upsert:true});
             });
-        },
+        },*/
         async RemoveRoom(root,{id}){
             Room.deleteOne({"_id":id});
         },
@@ -159,7 +171,7 @@ module.exports = resolvers = {
             return RoomChat.create(inputRoom).then((value)=>{
                 console.log("RoomChat _id"+value._id);
                 return User.findOne({ "username": username }).then(async res => {
-                    //console.log(res)
+                    console.log(res)
                     res.isHost = true
                     
                     // var userInfo={"username":username,avatar:"","_id":res._id};

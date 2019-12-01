@@ -18,13 +18,14 @@ const typeDefs=`
         getRoomByUser(idUser:String,name:String):[Room]
         getRoomByID(idRoom:String):Room
         allRoomChat:[RoomChat]
-        getRoomJoin(UserID:String):[RoomChat]
+        getRoomJoin(UserID:String):[Room]
         onJoinRoomChat(id_room:String,id_user:String):JoinRoomResult
 
         onJoinRoom(id_room:String,id_user:String,pwd:String):Result
         addMember(id_room:String!,id_user:String!):Result
         onChatGroup(id_room:String!,chat_message:MessageInput):Result
         getAllMessage(id_room:String!):RoomChat
+        findRoomByName(room_name:String):[Room]
     }
     type Room{
         _id:ID!

@@ -81,8 +81,10 @@ module.exports = resolvers = {
             })
         },
         async getRoomJoin(root,{UserID}){
-            return RoomChat.find(
-                {"member._id":UserID},)
+            return Room.find(
+                {"member._id":UserID},).then(value=>{
+                    return value
+                })
         },
         async onJoinRoomChat(root,{id_room,id_user}){
             return User.findById(id_user).then( async v=>{
@@ -149,7 +151,11 @@ module.exports = resolvers = {
             return RoomChat.findOne({"id_room":id_room}).then(result=>{
                 return result
             })
+        },
+        async findRoomByName(root,{room_name}){
+            return Room.find({"room_name":{'$regex': room_name,$options:'i'}});
         }
+
     },
     Mutation: {
         

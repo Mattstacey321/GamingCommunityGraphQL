@@ -21,7 +21,7 @@ module.exports = resolvers = {
             return await Room.find({ "room_name": name });
         },
         async getRoomByID(root, { idRoom }) {
-            return await Room.findById(idRoom);
+            return await Room.findOne({"_id":idRoom});
         },
 
         async allGlobalRoom(root, { qty, name }) {
@@ -82,9 +82,7 @@ module.exports = resolvers = {
         },
         async getRoomJoin(root,{UserID}){
             return Room.find(
-                {"member._id":UserID},).then(value=>{
-                    return value
-                })
+                {"member._id":UserID},)
         },
         async onJoinRoomChat(root,{id_room,id_user}){
             return User.findById(id_user).then( async v=>{
@@ -101,14 +99,14 @@ module.exports = resolvers = {
                 
                 if(value.isPrivate==true && value.password == pwd){
                     return User.findById(id_user).then(async res=>{
-                        return Room.findByIdAndUpdate(id_room,{$push:{"member":res}},{upsert:true,new:true},(err,res)=>{
-                            
+                        return RoomChat.findByIdAndUpdate({"id_room":id_room},{$push:{"member":res}},{upsert:true,new:true}).then(v=>{
+                          return Room.findByIdAndUpdate(id_room,{$push:{"member":res}},{upsert:true,new:true},(err,res)=>{
                         }).then(val=>{
-                         
                             return  { "data": val, "result": true };
                         }).catch(err=>{
                             return { "data": err, "result": false };
                         })
+                      });   
                     })
                 }
                 else if(value.password != pwd){
@@ -116,11 +114,14 @@ module.exports = resolvers = {
                 }
                 else{
                     return User.findById(id_user).then(async res=>{
-                        return Room.findByIdAndUpdate(id_room,{$push:{"member":res}},{upsert:true,new:true}).then(value=>{
-                            return  { "data": value, "result": true };
+                        return RoomChat.findOneAndUpdate({"id_room":id_room},{$push:{"member":res}},{upsert:true,new:true}).then(v=>{
+                          return Room.findByIdAndUpdate(id_room,{$push:{"member":res}},{upsert:true,new:true},(err,res)=>{
+                        }).then(val=>{
+                            return  { "data": val, "result": true };
                         }).catch(err=>{
                             return { "data": err, "result": false };
                         })
+                      });   
                     })
                 }
                 
@@ -137,25 +138,27 @@ module.exports = resolvers = {
             })
                 
         },
+        
         async onChatGroup(root,{id_room,chat_message}){
             
             return RoomChat.findOneAndUpdate({"id_room":id_room},{$push:{messages:chat_message}}).then(v=>{
-                console.log(v.messages[0].time);
+              return v;
+                //console.log(v.messages[0].time);
             })
             /*return RoomChat.findByIdAndUpdate(id_room,{$push:{messages:chat_message}},{upsert:true,new:true}).then(result=>{
                 console.log(result);
                 return {"data":result,"result":true}
             }).catch(err=>{return {"data":err,"result":false}});*/
         },
-        async getAllMessage(root,{id_room}){
+        async getAllMessage(root,{id_room,sl}){
+          
             return RoomChat.findOne({"id_room":id_room}).then(result=>{
                 return result
             })
         },
-        async findRoomByName(root,{room_name}){
+       async findRoomByName(root,{room_name}){
             return Room.find({"room_name":{'$regex': room_name,$options:'i'}});
         }
-
     },
     Mutation: {
         
@@ -186,11 +189,11 @@ module.exports = resolvers = {
                          return RoomChat.findOneAndUpdate({"_id":value._id},{$set:{"member":res,"id_room":f._id}},{rawResult: true,new:true}).then((doc)=>{
                              console.log(doc);
                              if(doc.ok){
-                                return { doc, "result": true }
+                                return { "id_room":f._id, "result": true }
                              }
                              else
                              {
-                                return { err, "result": false }
+                                return { "id_room":"", "result": false }
                              }
                          })
                             

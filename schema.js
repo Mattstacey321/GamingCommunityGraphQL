@@ -20,12 +20,11 @@ const typeDefs=`
         allRoomChat:[RoomChat]
         getRoomJoin(UserID:String):[Room]
         onJoinRoomChat(id_room:String,id_user:String):JoinRoomResult
-
         onJoinRoom(id_room:String,id_user:String,pwd:String):Result
         addMember(id_room:String!,id_user:String!):Result
         onChatGroup(id_room:String!,chat_message:MessageInput):Result
         getAllMessage(id_room:String!):RoomChat
-        findRoomByName(room_name:String):[Room]
+        findRoomByName(room_name:String!):[Room]
     }
     type Room{
         _id:ID!
@@ -65,6 +64,7 @@ const typeDefs=`
     }
     type Result{
       data:Room
+      
       status:String
       result:Boolean
     }
@@ -72,8 +72,14 @@ const typeDefs=`
         statusCode:String
         result:String
     }
+    type CreateResult{
+            id_room:String
+            result:Boolean
+    }
+    
     type JoinRoomResult{
         data:RoomChat
+        status:String
         result:Boolean
     }
     type RoomChat{
@@ -136,7 +142,7 @@ const typeDefs=`
     
     type Mutation{
         createRoomChat(input:RoomChatInput):RoomChat
-        createRoom(username:String,inputRoom:RoomChatInput,input: RoomInput,userInput:UserInput):Result
+        createRoom(username:String,inputRoom:RoomChatInput,input: RoomInput,userInput:UserInput):CreateResult
         RemoveRoom(id:ID!):ResultCRUD
         
         createUser(input:UserInput):User

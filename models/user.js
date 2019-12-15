@@ -7,5 +7,6 @@ const User= mongoose.Schema({
       type:Boolean,
       default: false
     },
+    cover:String
 })
 module.exports = mongoose.model('user',User);

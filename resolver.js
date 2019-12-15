@@ -3,6 +3,7 @@ const Room = require('./models/room')
 const User = require('./models/user')
 const GlobalRoom = require('./models/global_room');
 const RoomChat = require('./models/chat_room')
+const ListGame= require('./models/list_game');
 module.exports = resolvers = {
     Query: {
         async allMessage() {
@@ -158,6 +159,10 @@ module.exports = resolvers = {
         },
        async findRoomByName(root,{room_name}){
             return Room.find({"room_name":{'$regex': room_name,$options:'i'}});
+        },
+        async getListGame(root,{input}){
+            //return ListGame.create(input);
+            return await ListGame.find();
         }
     },
     Mutation: {
@@ -171,6 +176,12 @@ module.exports = resolvers = {
                 await Room.findOneAndUpdate({"room_name":input.room_name},{$push:{"member":res}},{upsert:true});
             });
         },*/
+        async createGame(root,{input}){
+            return ListGame.create(input).then((value)=>{
+                return value;
+            });
+        }
+        ,
         async RemoveRoom(root,{id}){
             Room.deleteOne({"_id":id});
         },
@@ -269,7 +280,8 @@ module.exports = resolvers = {
         },
         async createChatGlobal(root, { input }) {
             return await GlobalRoom.create(input);
-        }
+        },
+        
 
 
     }

@@ -11,7 +11,7 @@ const Room= mongoose.Schema({
     password:String,
     host_name:[User.schema],
     member:[User.schema],
-
+ 
 })
 const roomList= mongoose.Schema({
     //id:BigInt,

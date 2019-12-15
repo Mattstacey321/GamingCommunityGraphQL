@@ -25,6 +25,7 @@ const typeDefs=`
         onChatGroup(id_room:String!,chat_message:MessageInput):Result
         getAllMessage(id_room:String!):RoomChat
         findRoomByName(room_name:String!):[Room]
+        getListGame:[Game]
     }
     type Room{
         _id:ID!
@@ -34,6 +35,14 @@ const typeDefs=`
         password:String
         description:String
         member:[User!]
+    }
+    type Game{
+        _id:ID
+        game_name:String
+        genres:[String]
+        platforms:[String]
+        popularity:String
+        image:[String]
     }
     type User{
         _id:ID!
@@ -137,10 +146,20 @@ const typeDefs=`
             MessageInput
         ]
     }
+    input GameInput{
+        _id:ID
+        game_name:String
+        genres:[String]
+        platforms:[String]
+        popularity:String
+        tag:[String]
+        image:[String]
+    }
     
     
     
     type Mutation{
+        createGame(input:GameInput):Game
         createRoomChat(input:RoomChatInput):RoomChat
         createRoom(username:String,inputRoom:RoomChatInput,input: RoomInput,userInput:UserInput):CreateResult
         RemoveRoom(id:ID!):ResultCRUD

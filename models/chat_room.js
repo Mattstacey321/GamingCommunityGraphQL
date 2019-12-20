@@ -2,12 +2,14 @@ const mongoose= require('mongoose');
 const User= require('./user');
 const roomChat= mongoose.Schema({
     id_room:String,
-    member:[User.schema],
+    member:[String],
     messages:[
         {
-            IDUser:String,
+            id_user:String,
             text:String,
-            time:{ type: Date, default: Date.now }
+            image:String,
+            video:String,
+            time_created:{ type: Date, default: Date.now }
         }   
     ]
 })

@@ -3,9 +3,11 @@ const User=require('./user');
 const Message= require('./message');
 const globalRoom= mongoose.Schema({
     room_name:String,
+    game_name:String,
     message:[{
-        username:User.schema,
-        message:String
+        id_user:String,
+        message:String,
+        image:String
     }]
 })
 module.exports= mongoose.model('GlobalRoom',globalRoom);

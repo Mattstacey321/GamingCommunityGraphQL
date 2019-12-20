@@ -1,40 +1,38 @@
 
 const graphql_tools= require('graphql-tools')
 const resolvers= require('./resolver')
+const { GraphQLUpload } = require('graphql-upload');
+
 
 //query chua nhung lenh ma minh muon tao
 const typeDefs=`
-    
+    scalar Upload
     type Query{
         allMessage:[ListMessage]
         allRoom:[Room]
         allUser:[User]
-        findUser(username:String!):[User]
-        findRoom(input:RoomInput):[Room]
         allGlobalRoom(qty:Int,name:String):[GlobalMessage]
         RmvMbFrRoom(type:String!,idUser:String,idRoom:String):Result
         EditRoom(idRoom:ID!,newData:RoomInput):Result
-        ChangeHost:[Room]
+        ChangeHost(oldHost:String!,newHost:String!):[Room]
         getRoomByUser(idUser:String,name:String):[Room]
-        getRoomByID(idRoom:String):Room
         allRoomChat:[RoomChat]
         getRoomJoin(UserID:String):[Room]
         onJoinRoomChat(id_room:String,id_user:String):JoinRoomResult
-        onJoinRoom(id_room:String,id_user:String,pwd:String):Result
         addMember(id_room:String!,id_user:String!):Result
         onChatGroup(id_room:String!,chat_message:MessageInput):Result
         getAllMessage(id_room:String!):RoomChat
         findRoomByName(room_name:String!):[Room]
-        getListGame:[Game]
+        getListGame(limit:Int):[Game]
     }
     type Room{
         _id:ID!
         room_name:String!
-        host_name:[User]
+        id_user:String
         isPrivate:Boolean
         password:String
         description:String
-        member:[User!]
+        member:[String]
     }
     type Game{
         _id:ID
@@ -42,6 +40,7 @@ const typeDefs=`
         genres:[String]
         platforms:[String]
         popularity:String
+        logo:String
         image:[String]
     }
     type User{
@@ -53,8 +52,9 @@ const typeDefs=`
 
     type Message{
         _id:ID
-        IDUser:String
+        id_user:String
         text:String
+        image:String
         datetime:String
     }
     type ListMessage{
@@ -88,18 +88,17 @@ const typeDefs=`
     
     type JoinRoomResult{
         data:RoomChat
-        status:String
+        statusCode:String
         result:Boolean
     }
     type RoomChat{
         _id:ID!
         id_room:String
-        member:[User]
+        member:[String]
         messages:[
             Message
         ]
     }
-   
     input newMessage{
         username:String!
         listmessage:[
@@ -107,12 +106,13 @@ const typeDefs=`
         ]
     }
     input RoomInput{
+        _id:ID
         room_name:String!
         isPrivate:Boolean
-        host_name:[UserInput]
+        id_user:String
         password:String
         description:String
-        member:[UserInput]
+        member:[String]
         
     }
     input UserInput{
@@ -153,6 +153,7 @@ const typeDefs=`
         platforms:[String]
         popularity:String
         tag:[String]
+        logo:String
         image:[String]
     }
     
@@ -161,7 +162,7 @@ const typeDefs=`
     type Mutation{
         createGame(input:GameInput):Game
         createRoomChat(input:RoomChatInput):RoomChat
-        createRoom(username:String,inputRoom:RoomChatInput,input: RoomInput,userInput:UserInput):CreateResult
+        createRoom(userID:String,chatInput:RoomChatInput,roomInput: RoomInput):CreateResult
         RemoveRoom(id:ID!):ResultCRUD
         
         createUser(input:UserInput):User
@@ -172,13 +173,19 @@ const typeDefs=`
         ):GlobalMessage
         onChat(input:newMessage):ListMessage
         onChatUpdate(name:String!,input:MessageInput):ListMessage
-        onJoinRoom(roomName:String!,input:UserInput):Room
+        onJoinRoom(id_room:String!,id_user:String):JoinRoomResult
         createChatGlobal(input:
            MessageGlobalInput ):GlobalMessage
-        
+        uploadImage(name: String!, file: Upload!): Boolean
+
     }
 `;
+//uploadImage(name: String!, file: Upload!): Boolean
 const schema= graphql_tools.makeExecutableSchema({
+ 
+    /*typeDefs,resolvers:{
+        Upload: GraphQLUpload,  
+    },*/
     typeDefs,resolvers
 });
 module.exports = schema;

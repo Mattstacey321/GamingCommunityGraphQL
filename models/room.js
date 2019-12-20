@@ -1,20 +1,18 @@
 const mongoose= require('mongoose');
 const User= require('./user')
 const Room= mongoose.Schema({
-    //id:BigInt,
+    
     room_name:String,
     isPrivate:{
       type:Boolean,
       default: false
     },
+    game:String,
     description:String,
     password:String,
-    host_name:[User.schema],
-    member:[User.schema],
+    id_host:String,
+    member:[String],
  
 })
-const roomList= mongoose.Schema({
-    //id:BigInt,
-    list:[Room]
-})
+
 module.exports= mongoose.model('roomList',Room);
